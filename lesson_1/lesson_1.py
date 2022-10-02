@@ -116,9 +116,11 @@ ping_resources(resources)
 
 
 def open_and_read_txt(file):
-    with open(file, encoding='utf-8') as f:
-        for line in f.readlines():
-            print(line)
-
+    from chardet import detect
+    with open(file, 'rb') as f:
+        encoding = detect(f.read())['encoding']
+        f.seek(0)
+        result = f.read().decode(encoding=encoding)
+    print(result)
 
 open_and_read_txt('test_file.txt')
