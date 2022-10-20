@@ -5,8 +5,7 @@ from utils import send_message, get_message
 from mainapp.settings import HOST, PORT, ACTIONS, USER, ACTION
 
 
-def get_server_response(socket):
-    message = get_message(socket)
+def get_server_response(message):
     print(message)
     if message.get(ACTION) == ACTIONS.get('presence') and \
             message.get(USER) == 'testUser':
@@ -37,7 +36,8 @@ def main():
     sock.listen(5)
     while True:
         client, addr = sock.accept()
-        server_response = get_server_response(client)
+        message = get_message(client)
+        server_response = get_server_response(message)
         send_message(client, server_response)
         client.close()
 
