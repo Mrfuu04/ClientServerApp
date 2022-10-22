@@ -1,4 +1,7 @@
 import unittest
+import sys
+sys.path.append('..')
+
 from server import get_server_response
 from settings import ACTION, ACTIONS, MESSAGE, USER
 

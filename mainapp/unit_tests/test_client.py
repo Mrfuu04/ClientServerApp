@@ -1,4 +1,6 @@
 import unittest
+import sys
+sys.path.append('..')
 
 from client import make_dict_from_message
 from settings import ACTION, ACTIONS, MESSAGE, USER

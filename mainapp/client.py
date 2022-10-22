@@ -1,7 +1,7 @@
 from sys import argv
 from socket import socket, AF_INET, SOCK_STREAM
 
-from mainapp.settings import HOST, PORT, ACTION, MESSAGE, USER, ACTIONS
+from settings import HOST, PORT, ACTION, MESSAGE, USER, ACTIONS
 from utils import send_message, get_message
 
 

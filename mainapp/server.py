@@ -2,7 +2,7 @@ from socket import socket, AF_INET, SOCK_STREAM
 from sys import argv
 
 from utils import send_message, get_message
-from mainapp.settings import HOST, PORT, ACTIONS, USER, ACTION
+from settings import HOST, PORT, ACTIONS, USER, ACTION
 
 
 def get_server_response(message):
