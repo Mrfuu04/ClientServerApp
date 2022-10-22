@@ -1,15 +1,15 @@
 from sys import argv
 from socket import socket, AF_INET, SOCK_STREAM
 
-from mainapp.settings import HOST, PORT, ACTION, MESSAGE, USER, ACTIONS
+from settings import HOST, PORT, ACTION, MESSAGE, USER, ACTIONS
 from utils import send_message, get_message
 
 
-def make_dict_from_message(message, action):
+def make_dict_from_message(message, username, action):
     dict_message = {
         ACTION: action,
         MESSAGE: message,
-        USER: 'testUser',
+        USER: username,
     }
     return dict_message
 
@@ -28,7 +28,7 @@ def main():
     sock = socket(AF_INET, SOCK_STREAM)
     host, port = get_host_and_port()
     sock.connect((host, port))
-    dict_message = make_dict_from_message('Приветики!', ACTIONS.get('presence'))
+    dict_message = make_dict_from_message('Приветики!', 'testUser', ACTIONS.get('presence'))
     send_message(sock, dict_message)
     print(get_message(sock))
     sock.close()

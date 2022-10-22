@@ -1,4 +1,4 @@
-from mainapp.settings import ENCODING
+from settings import ENCODING
 import json
 
 
