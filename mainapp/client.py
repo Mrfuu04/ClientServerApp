@@ -41,7 +41,7 @@ def main():
         logger.info(f'Подключение к {(host, port)} успешно!')
     dict_message = make_dict_from_message('Приветики!', 'testUser', ACTIONS.get('presence'))
     send_message(sock, dict_message)
-    logger.info(f'Сообщение {dict_message} отправлено\n{sock}')
+    logger.info(f'Сообщение {dict_message} отправлено')
     logger.info(f'Получено сообщение от сервера {get_message(sock)}')
     sock.close()
 
