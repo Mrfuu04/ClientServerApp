@@ -35,12 +35,11 @@ def log(func):
 
 
 @log
-def get_message(socket):
+def get_message(data):
     """
     Парсит сообщение из сокета и
     возвращает словарь
     """
-    data = socket.recv(1000000)
     if isinstance(data, bytes):
         dict_string = data.decode(ENCODING)
         message = json.loads(dict_string)

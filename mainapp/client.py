@@ -30,20 +30,27 @@ def get_host_and_port():
 
 
 def main():
-    sock = socket(AF_INET, SOCK_STREAM)
-    host, port = get_host_and_port()
-    try:
-        sock.connect((host, port))
-    except ConnectionRefusedError as e:
-        logger.error(f'Подключение сброшено\n{e}')
-        sys.exit(1)
-    else:
+    with socket(AF_INET, SOCK_STREAM) as sock:
+        host, port = get_host_and_port()
+        try:
+            sock.connect((host, port))
+        except ConnectionRefusedError as e:
+            logger.error(f'Подключение сброшено\n{e}')
+            sys.exit(1)
+        except OSError as e:
+            print('Подключение уже установлено')
+        print(f'Подключено к {host}:{port}')
         logger.info(f'Подключение к {(host, port)} успешно!')
-    dict_message = make_dict_from_message('Приветики!', 'testUser', ACTIONS.get('presence'))
-    send_message(sock, dict_message)
-    logger.info(f'Сообщение {dict_message} отправлено')
-    logger.info(f'Получено сообщение от сервера {get_message(sock)}')
-    sock.close()
+        mode = input('Выбор режима (l)-слушать, (w)-писать:')
+        while True:
+            if mode == 'l':
+                data = sock.recv(4096)
+                print(data.decode('utf-8'))
+            elif mode == 'w':
+                message = input()
+                sock.send(message.encode('utf-8'))
+            else:
+                mode = input('Выбор режима (l)-слушать, (w)-писать:')
 
 
 if __name__ == '__main__':
