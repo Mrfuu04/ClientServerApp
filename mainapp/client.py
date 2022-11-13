@@ -1,5 +1,7 @@
 import sys
 from sys import argv
+from time import sleep
+from threading import Thread
 from logging import getLogger
 from socket import socket, AF_INET, SOCK_STREAM
 
@@ -29,6 +31,20 @@ def get_host_and_port():
     return host, port
 
 
+def reciever_interface(sock):
+    while True:
+        data = sock.recv(4096)
+        print(data.decode('utf-8'))
+
+
+def user_interface(sock):
+    while True:
+        message = input()
+        if message == 'exit':
+            break
+        sock.send(message.encode('utf-8'))
+
+
 def main():
     with socket(AF_INET, SOCK_STREAM) as sock:
         host, port = get_host_and_port()
@@ -41,16 +57,17 @@ def main():
             print('Подключение уже установлено')
         print(f'Подключено к {host}:{port}')
         logger.info(f'Подключение к {(host, port)} успешно!')
-        mode = input('Выбор режима (l)-слушать, (w)-писать:')
+        user_interface_thread= Thread(target=user_interface, args=(sock,), daemon=True)
+        reciever_interface_thread = Thread(target=reciever_interface, args=(sock, ), daemon=True)
+        print('Для выхода введите exit')
+        user_interface_thread.start()
+        reciever_interface_thread.start()
         while True:
-            if mode == 'l':
-                data = sock.recv(4096)
-                print(data.decode('utf-8'))
-            elif mode == 'w':
-                message = input()
-                sock.send(message.encode('utf-8'))
-            else:
-                mode = input('Выбор режима (l)-слушать, (w)-писать:')
+            sleep(1)
+            if user_interface_thread.is_alive() and \
+                reciever_interface_thread.is_alive():
+                continue
+            break
 
 
 if __name__ == '__main__':
